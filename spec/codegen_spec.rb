@@ -27,7 +27,16 @@ describe Codegen do
 		end
 	end
 
-	# context "Generating a JavaClass Object"
+	context "Generating a JavaClass Object" do
+		before :each do
+			@ar_class = mock_active_record
+		end
 
-	# end
+		it "Should generate a valid java code for this example" do
+			source = Codegen::Sources::ActiveRecord.new 
+			generator = Codegen::Generators::JavaPojo.new 
+			entities = source.convert! type: :entity, models: [ @ar_class ]
+			results = generator.generate! type: :entity, entities: entities
+		end
+	end
 end

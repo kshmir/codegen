@@ -1,7 +1,8 @@
 require 'hooks'
 
 module Codegen
-	module Sources
+	module Generators
+		# Sin, this is not DRYed enough, go look Codegen::Sources::Base :(
 		class Base
 			include Hooks
 
@@ -21,14 +22,14 @@ module Codegen
 
 			### Adds checks for types that are valid
 
-			define_hooks :before_convert
-			before_convert do |params|
+			define_hooks :before_generate
+			before_generate do |params|
 			  raise Exception.new("Unexpected type!") if not self.class.convert_to.include? params[:type]
 			end
 
-			def convert! params
-				self.run_hook :before_convert, params
-				convert params
+			def generate! params
+				self.run_hook :before_generate, params
+				generate params
 		  end
 		end
 	end
