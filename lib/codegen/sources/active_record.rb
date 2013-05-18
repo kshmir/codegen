@@ -1,5 +1,9 @@
+
+
 module Codegen
 	module Sources
+
+
 		class ActiveRecord < Base
 
 			converts_to :entity
@@ -15,12 +19,16 @@ module Codegen
 				models = options[:models] || collect_all_models
 				models_and_methods = models.map { |model| 
 					{ 
-						model => {
-							methods: model_methods(model),
-							relations: model_relations(model)
-						}
+						begin
+							model => {
+								methods: model_methods(model),
+								relations: model_relations(model)
+							}							
+						rescue Exception => e
+							nil	
+						end
 					}
-				}
+				}.filter { |x| x.nil? }
 
 				models_and_methods.map { |mm| 
 					model_to_entity(mm)
@@ -71,7 +79,7 @@ module Codegen
 			def collect_all_models
 				begin
 					Rails.application.eager_load! if defined?(Rails)
-					ActiveRecord::Base.subclasses
+					::ActiveRecord::Base.subclasses
 				rescue
 					[]
 				end
