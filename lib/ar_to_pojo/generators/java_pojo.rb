@@ -2,7 +2,7 @@ require 'json'
 
 module ArToPojo
 	module Generators
-		module JavaEntity
+		module JavaPojo
 
 		end
 	end
