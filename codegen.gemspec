@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'ar_to_pojo/version'
+require 'codegen/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "ar_to_pojo"
-  spec.version       = ArToPojo::VERSION
+  spec.name          = "codegen"
+  spec.version       = Codegen::VERSION
   spec.authors       = ["Cristian Pereyra"]
   spec.email         = ["criis.pereyra@gmail.com"]
   spec.description   = %q{A gem for making Java POJOs out of ActiveRecord models}
@@ -22,4 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "simplecov"
+
+  spec.add_dependency 'active_support'
 end
