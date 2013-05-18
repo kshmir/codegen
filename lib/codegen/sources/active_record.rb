@@ -28,7 +28,7 @@ module Codegen
 					rescue Exception => e
 						nil	
 					end
-					}.filter { |x| x.nil? }
+					}.reject { |x| x.nil? }
 
 					models_and_methods.map { |mm| 
 						model_to_entity(mm)
