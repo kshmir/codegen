@@ -1,9 +1,5 @@
-
-
 module Codegen
 	module Sources
-
-
 		class ActiveRecord < Base
 
 			converts_to :entity
