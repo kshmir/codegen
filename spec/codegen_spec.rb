@@ -3,7 +3,7 @@ require 'rspec_helper'
 require 'pry'
 
 describe Codegen do
-	context "Mocking ActiveRecord" do 
+	context "Analyzing ActiveRecord" do 
 		before :each do
 			@ar_class = mock("Entity")
 
@@ -47,9 +47,11 @@ describe Codegen do
 			@ar_class.reflect_on_all_associations.size.should_not == 0
 
 			source = Codegen::Sources::ActiveRecord.new 
-			entities = source.convert type: :entity, models: [@ar_class]
-			entities.size.should == 1
+			entities = source.convert type: :entity, models: 5.times.map { @ar_class }
+			entities.size.should == 5
 			entities.first.name.should == "Entity"
+			entities.first.relations.count.should == 5
+			entities.first.methods.count.should == 6
 		end
 	end
 end
