@@ -36,7 +36,9 @@ describe Codegen do
 			source = Codegen::Sources::ActiveRecord.new 
 			generator = Codegen::Generators::JavaPojo.new 
 			entities = source.convert! type: :entity, models: [ @ar_class ]
-			results = generator.generate! type: :entity, entities: entities
+			
+			# TODO: Check validity of file
+			generator.generate! type: :entity, entities: entities, package: "com.redmintlabs"
 		end
 	end
 end

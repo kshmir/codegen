@@ -19,10 +19,23 @@ module Codegen
 
 				entities.each do |entity|
 					code = make_code_for(entity, package)
-					binding.pry
-					filename = make_filename_for(entity, package)
+					filename = make_filename_for(entity, package, destination)
 					save filename, code
 				end
+			end
+
+			def make_filename_for entity, package, destination
+				"#{destination}#{package.gsub(/\./,"/")}/#{entity.name}.java"
+			end
+
+			def save filename, code
+				dir = File.dirname(filename)
+				FileUtils.mkdir_p(dir)
+				f = File.open(filename, "w+")
+				f.puts code
+				f.flush
+				f.close
+				puts "Saved: #{filename}"
 			end
 
 			def make_code_for entity, package
@@ -33,19 +46,15 @@ module Codegen
 						# // Attributes declaration
 						methods_declaration.append_line do
 							# public Type name or public List<Type> name;
-							entity.methods.reduce("") do |buffer, method|
-								buffer.append_line do
-										method_declaration(method)
-								end
-							end
+							entity.methods.map do |method|
+								method_declaration(method)
+							end.join("\r\n")
 						end.append_line do
 							relations_declaration.append_line do
 								# public Type name or public List<Type> name;
-								entity.relations.reduce("") do |buffer, relation|
-									buffer.append_line do
-										method_declaration(relation)
-									end
-								end
+								entity.relations.map do |relation|
+									method_declaration(relation)
+								end.join("\r\n")
 							end
 						end
 					end
@@ -59,11 +68,24 @@ module Codegen
 			def method_declaration method
 				declaration = "\t"
 				if method[:cardinality] == :many
-					return declaration += "List<#{method[:type]}> #{method[:name]};"
+					return declaration += "List<#{resolve_type method[:type]}> #{method[:name]};"
 				elsif method[:cardinality] == :one
-					return declaration += "#{method[:type]} #{method[:name]};"
+					return declaration += "#{resolve_type method[:type]} #{method[:name]};"
 				end
 				raise Exception.new "Unsupported entity cardinality!"
+			end
+
+			def resolve_type type
+				case type.to_s
+					when "string", "date", "float", "integer"
+						return type.to_s.titleize
+					when "text"
+						return "String"
+					when "datetime"
+						return "DateTime"
+					else
+						return type
+				end
 			end
 
 			def methods_declaration

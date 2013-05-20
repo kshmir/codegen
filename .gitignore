@@ -2,6 +2,7 @@
 *.rbc
 .DS_Store
 /**/.DS_Store
+/gen
 .bundle
 .config
 .yardoc
