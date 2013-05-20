@@ -98,7 +98,7 @@ module Codegen
 
 			def define_import package
 				if package != nil && package != ""
-					"import #{package};"
+					"package #{package};"
 				else
 					""
 				end
