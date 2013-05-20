@@ -27,8 +27,9 @@ They don't need to be in this order:
 
 - Write full and comprehensive tests.
 - Split clearly the tests for sources and generators.
-- Implement CLI commands.
-- Make them beautiful like the Rails or Passenger ones.
+- Implement "codegen.yml" and make it able to support all kinds of sources and generators. 
+- Make something like Rails does for code generation, showing pretty colors and prompting users.
+- Support code merging, with declared sections for free user input.
 - Add other languages other than Java for generating entities.
 - Add REST API building using grape (!).
 - Add REST API comsumption for Java.
